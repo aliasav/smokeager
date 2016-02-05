@@ -1,4 +1,5 @@
 Django==1.8
+django-cors-headers==1.1.0
 django-extensions==1.6.1
 django-filter==0.12.0
 djangorestframework==3.3.2
@@ -8,3 +9,4 @@ pydot==1.0.2
 pyparsing==1.5.7
 pytz==2015.7
 six==1.10.0
+whitenoise==2.0.6
