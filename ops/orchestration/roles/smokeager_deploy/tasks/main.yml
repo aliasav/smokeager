@@ -1,0 +1,58 @@
+---
+# Install smokeager dependencies and deploy smokeager codebase
+
+- name: Deploy code on smokeager server
+  git: "repo={{ repository }} dest={{ deploy_dir }} version={{ branch }} accept_hostkey=yes force=yes"
+  tags: deploy
+
+
+- name: Create settings_local
+  shell: "chdir={{ smokeager_main_dir }}/ cp settings_{{ server_environment }}.py settings_local.py"
+  tags: deploy
+
+
+# - name: Make settings changes in app_js
+#   shell: source "{{ orchestration_dir }}"/app_js_settings.sh
+#   tags: deploy
+#   when: "'{{ server_environment }}' == 'production'"
+
+
+#- name: Create media directory if absent
+#  shell:  "mkdir -p media/{{ item }}"
+#  with_items: media_folders
+#  args:
+#    chdir: "{{ smokeager_main_dir }}"
+#    creates: "{{ smokeager_main_dir }}media/{{ item }}"
+#  tags: deploy
+
+
+- name: Install python dependencies from requirements file
+  pip: requirements="{{ deploy_dir }}/smokeager/requirements.txt" virtualenv="{{ virtualenv_dir }}" extra_args="--allow-external PIL"
+  tags: deploy
+
+
+- name: syncdb on smokeager
+  django_manage: >
+    command=syncdb
+    app_path="{{ smokeager_main_dir }}"
+    settings='smokeager.settings'
+    virtualenv="{{ virtualenv_dir }}"
+  tags: deploy
+
+
+- name: migrate on smokeager
+  command: chdir="{{ deploy_dir }}/smokeager/" {{ virtualenv_dir }}/bin/python manage.py migrate
+  tags: deploy
+
+- name: delete public folder
+  shell: chdir="{{ deploy_dir }}/smokeager/" rm -rf "{{static_root}}"
+  tags: deploy
+
+- name: perform collect static 
+  command: chdir="{{ deploy_dir }}/smokeager/" {{ virtualenv_dir }}/bin/python manage.py collectstatic --noinput
+  tags: deploy
+  
+- name: restart smokeager uwsgi server
+  shell: source "{{ orchestration_dir }}"/restart_smokeager_server.sh
+  tags: deploy
+
