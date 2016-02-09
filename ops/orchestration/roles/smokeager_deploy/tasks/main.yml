@@ -27,21 +27,17 @@
 
 
 - name: Install python dependencies from requirements file
-  pip: requirements="{{ deploy_dir }}/smokeager/requirements.txt" virtualenv="{{ virtualenv_dir }}" extra_args="--allow-external PIL"
+  pip: requirements="{{ deploy_dir }}/requirements.txt" virtualenv="{{ virtualenv_dir }}" extra_args="--allow-external PIL"
   tags: deploy
 
 
 - name: syncdb on smokeager
-  django_manage: >
-    command=syncdb
-    app_path="{{ smokeager_main_dir }}"
-    settings='smokeager.settings'
-    virtualenv="{{ virtualenv_dir }}"
+  command: chdir="{{ deploy_dir }}" {{ virtualenv_dir }}/bin/python manage.py syncdb
   tags: deploy
 
 
 - name: migrate on smokeager
-  command: chdir="{{ deploy_dir }}/smokeager/" {{ virtualenv_dir }}/bin/python manage.py migrate
+  command: chdir="{{ deploy_dir }}" {{ virtualenv_dir }}/bin/python manage.py migrate
   tags: deploy
 
 - name: delete public folder
@@ -49,7 +45,7 @@
   tags: deploy
 
 - name: perform collect static 
-  command: chdir="{{ deploy_dir }}/smokeager/" {{ virtualenv_dir }}/bin/python manage.py collectstatic --noinput
+  command: chdir="{{ deploy_dir }}" {{ virtualenv_dir }}/bin/python manage.py collectstatic --noinput
   tags: deploy
   
 - name: restart smokeager uwsgi server

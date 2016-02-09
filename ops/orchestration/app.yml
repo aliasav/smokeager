@@ -2,9 +2,9 @@
 
 - name : Deploy codebase on smokeager server
   hosts: "smokeager_server"
-  user: root
-  sudo: yes
-  sudo_user: aliasav
+  user: aliasav
+  become: aliasav
+  become_user: aliasav
   gather_facts: false
   roles:
     - smokeager_deploy
