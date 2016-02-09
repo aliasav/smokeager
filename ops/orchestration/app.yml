@@ -4,7 +4,7 @@
   hosts: "smokeager_server"
   user: root
   sudo: yes
-  sudo_user: smokeager
+  sudo_user: aliasav
   gather_facts: false
   roles:
     - smokeager_deploy

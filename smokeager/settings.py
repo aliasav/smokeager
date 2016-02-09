@@ -176,3 +176,18 @@ LOGGING = {
     },
 
 }
+
+
+
+# import settings_local
+try:
+
+    from settings_local import *
+    print "settings_local imported!"
+
+except:
+
+    print "settings_local not found!"
+    
+
+
