@@ -3,7 +3,7 @@
 ** Orchestration **
 
 * deploy in production
-ansible-playbook -i hosts app.yml --tags deploy --extra-vars "server_environment=production branch=develop"
+ansible-playbook -i hosts app.yml --tags deploy --extra-vars "server_environment=production branch=develop" --ask-pass
 
 * deploy in staging
 ansible-playbook -i hosts app.yml --tags deploy --extra-vars "server_environment=staging branch=develop"
