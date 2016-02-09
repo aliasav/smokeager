@@ -49,6 +49,6 @@
   tags: deploy
   
 - name: restart smokeager uwsgi server
-  shell: source "{{ orchestration_dir }}"/restart_smokeager_server.sh
+  shell: bash "{{ orchestration_dir }}/restart_smokeager_server.sh"
   tags: deploy
 
