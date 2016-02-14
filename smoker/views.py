@@ -64,8 +64,11 @@ def signup(request):
                     smoker.name = data["name"]
                     smoker.save()
 
+                    #fetch token
+                    t = Token.objects.get(user=user).key
+
                     logger.debug("New smoker created: %s" %smoker)
-                    return Response(status=status.HTTP_200_OK)
+                    return Response(status=status.HTTP_200_OK, data={"key": t})
 
                 else:
 

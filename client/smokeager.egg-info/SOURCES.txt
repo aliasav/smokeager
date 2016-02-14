@@ -1,0 +1,8 @@
+cli.py
+scripts.py
+setup.py
+smokeager.egg-info/PKG-INFO
+smokeager.egg-info/SOURCES.txt
+smokeager.egg-info/dependency_links.txt
+smokeager.egg-info/entry_points.txt
+smokeager.egg-info/top_level.txt

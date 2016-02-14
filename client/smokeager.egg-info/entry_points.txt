@@ -1,0 +1,3 @@
+[console_scripts]
+smokeager = cli:entry
+
