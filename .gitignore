@@ -7,4 +7,5 @@ client/build/*
 client/dist/*
 client/build
 client/dist
-client/smokeager.egg-info/entry_points.t
+client/smokeager.egg-info/*
+client/smokeager.egg-info/
