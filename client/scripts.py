@@ -12,8 +12,8 @@ class SmokeagerCLI:
 	def __init__(self):
 		# server domain
 		self.SERVER = {
-			"s1": "http://localhost:8000/api", # for testing
-			"s2": "http://autobot/api",
+			"s2": "http://localhost:8000/api", # for testing
+			"s1": "http://autobot/api",
 		}
 		# all api urls
 		self.APIS = {
