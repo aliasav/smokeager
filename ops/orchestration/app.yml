@@ -1,0 +1,10 @@
+# Deploys smokeager codebase on server
+
+- name : Deploy codebase on smokeager server
+  hosts: "smokeager_server"
+  user: aliasav
+  become: aliasav
+  become_user: aliasav
+  gather_facts: false
+  roles:
+    - smokeager_deploy

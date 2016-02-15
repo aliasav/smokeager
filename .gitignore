@@ -3,3 +3,9 @@
 *.DS_Store
 *.sqlite3
 staticfiles/
+client/build/*
+client/dist/*
+client/build
+client/dist
+client/smokeager.egg-info/*
+client/smokeager.egg-info/

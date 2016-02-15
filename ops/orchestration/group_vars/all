@@ -1,0 +1,9 @@
+# variables used across the playbook
+# replace directory settings wherever required
+
+repository: git@github.com:aliasav/smokeager.git
+deploy_dir: /home/aliasav/workspace/smokeager/
+smokeager_main_dir: /home/aliasav/workspace/smokeager/smokeager
+virtualenv_dir: /home/aliasav/virtualenvs/smokeager
+orchestration_dir: /home/aliasav/workspace/smokeager/ops/orchestration
+static_root: staticfiles

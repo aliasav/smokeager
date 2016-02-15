@@ -125,6 +125,8 @@ STATICFILES_DIRS = (
 
 #STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
+CELERY_TIMEZONE = 'Asia/Kolkata'
+
 # rest framework permission classes
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
@@ -174,3 +176,18 @@ LOGGING = {
     },
 
 }
+
+
+
+# import settings_local
+try:
+
+    from settings_local import *
+    print "settings_local imported!"
+
+except:
+
+    print "settings_local not found!"
+    
+
+

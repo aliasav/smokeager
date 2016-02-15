@@ -1,0 +1,17 @@
+**** OPS CHEAT-SHEET ****
+
+** Orchestration **
+
+* deploy in production
+ansible-playbook -i hosts app.yml --tags deploy --extra-vars "server_environment=production branch=develop" --ask-pass
+
+* deploy in staging
+ansible-playbook -i hosts app.yml --tags deploy --extra-vars "server_environment=staging branch=develop"
+
+* deploy in testing
+ansible-playbook -i hosts app.yml --tags deploy --extra-vars "server_environment=testing branch=develop"
+
+* backup database
+mysqldump -u root -p<password> smokeager > smokeager.sql
+
+

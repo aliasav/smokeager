@@ -52,7 +52,7 @@ def get_user_smoker_from_token(token_key):
 def fetch_smoker_analytics(user=None, smoker=None):
 
     #logger.debug("fetch_smoker_analytics user: %s \tsmoker: %s" %(user, smoker))
-    resp_data = None
+    resp_data = None; s = None;
 
     if user:        
         try:
