@@ -92,8 +92,10 @@ def increment_smoke(request):
     valid_data, data = get_request_content("create_smoke", request, None, ["token_list", "count"])
 
     if valid_data:
-
-        data["token_list"] = ast.literal_eval(data["token_list"])
+        try:
+            data["token_list"] = ast.literal_eval(data["token_list"])
+        except:
+            data["token_list"] = data["token_list"]
         
         # individual smokers
         for token in data["token_list"]:

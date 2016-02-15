@@ -5,20 +5,9 @@ import os
 import requests
 import json
 import ConfigParser
+import ast
 
 class SmokeagerCLI:
-
-	# server domain
-	SERVER = {
-		"s1": "http://locahost:8000/api", # for testing
-		"s2": "http://autobot/api",
-	}
-	# all api urls
-	APIS = {
-		"smoke1": "/increment_smoke",
-		"analytics": "/analytics",
-		"signup": "/signup",
-	}
 
 	def __init__(self):
 		# server domain
@@ -28,11 +17,16 @@ class SmokeagerCLI:
 		}
 		# all api urls
 		self.APIS = {
-			"smoke1": "/increment_smoke",
+			"increment": "/increment_smoke",
 			"analytics": "/analytics",
 			"signup": "/signup",
 		}
-		pass
+		self.SETTINGS = {
+			"sections": [{
+				"account": ["name", "email", "token"],
+			}],
+			"file_name": "settings.ini",
+		}		
 
 	# sets up smokeager cli for user
 	# stores account information in ~/.smkoeager-cli/account.txt
@@ -123,15 +117,96 @@ class SmokeagerCLI:
 			sys.exit()
 
 
+	# get settings file information
+	def get_settings(self):
+		#check for settings file	
+		smokeager_cli_settings_file = self.get_smokeager_dir() + "/" + self.SETTINGS["file_name"]
+		if os.path.isfile(smokeager_cli_settings_file):
+			config = ConfigParser.ConfigParser()
+			try:
+				config.read(smokeager_cli_settings_file)
+			except:
+				print("Error in fetching settings file!")
+				sys.exit()
+			settings_data = {}
+			# get data
+			for section in self.SETTINGS["sections"]:
+				for option in section[section.keys()[0]]:
+					settings_data[option] = config.get(section.keys()[0], option)
+			#print(settings_data)
+			return settings_data
+
+
+
+	def get_smokeager_dir(self):
+		#check for settings file	
+		home_dir=""
+		try:
+			from os.path import expanduser
+			home_dir = expanduser("~")
+		except:
+			print("Unable to fetch home dir, please contact maintainers of project!")
+			sys.exit()
+		
+		smokeager_cli_path = home_dir+"/.smokeager-cli"
+		if not os.path.exists(smokeager_cli_path):
+			print("smokeager-cli files do not exits! Please run smokeager setup!")
+			sys.exit()
+		else:		
+			return smokeager_cli_path
+
 
 	# makes api call to increment smoke count
 	def increment_smoke(self, inc):
-		print("Incrementing smoke by: " + str(inc))
-		return
+		settings_data = self.get_settings()
+		if settings_data["token"]:
+			token = ast.literal_eval((settings_data["token"]))
+			token = token["key"]
+		else:
+			print("Token missing in settings file!")
+			sys.exit()
+
+		increment_api = self.SERVER["s1"] + self.APIS["increment"]
+		data  = {
+			"token_list": [token,],
+			"count": inc,
+		}
+		try:
+			print("Contacting server ...")
+			r = requests.post(increment_api, data=json.dumps(data), timeout=5)
+		except:
+			print("Please check your connection!")
+			sys.exit()
+		else:
+			if (r.status_code==200):
+				print("Count incremented successfully!")
+				response = r.text
+				return response
+			else:
+				print("Server returned: " + str(r.status_code))
+				sys.exit()
+asdjashdgj
 
 	# displays smoke analytics information
 	def status(self):
-		print("Fetching smoke analytics")
+		settings_data = self.get_settings()
+		if settings_data["token"]:
+			token = ast.literal_eval(settings_data["token"])
+		else:
+			print("Token missing in settings file!")
+			sys.exit()
+		status_api = self.SERVER["s1"] + self.APIS["status"]
+		data = {
+			"token": token,
+		}
+		try:
+			print("Contacting server ...")
+			r = requests.post(status_api, data=json.dumps(data), timeout=5)
+		except:
+			print("Please check your connection!")
+			sys.exit()
+		else:
+			if (r.status)
 		return
 
 	# cleans ~/.smokeager-cli/
