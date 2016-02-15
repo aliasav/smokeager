@@ -18,7 +18,7 @@ class SmokeagerCLI:
 		# all api urls
 		self.APIS = {
 			"increment": "/increment_smoke",
-			"analytics": "/analytics",
+			"status": "/get_stats",
 			"signup": "/signup",
 		}
 		self.SETTINGS = {
@@ -185,30 +185,43 @@ class SmokeagerCLI:
 			else:
 				print("Server returned: " + str(r.status_code))
 				sys.exit()
-asdjashdgj
+
 
 	# displays smoke analytics information
 	def status(self):
 		settings_data = self.get_settings()
 		if settings_data["token"]:
 			token = ast.literal_eval(settings_data["token"])
+			token = token["key"]
 		else:
 			print("Token missing in settings file!")
-			sys.exit()
+			sys.exit()		
 		status_api = self.SERVER["s1"] + self.APIS["status"]
 		data = {
 			"token": token,
 		}
+
 		try:
-			print("Contacting server ...")
+			#print("Contacting server ...")
 			r = requests.post(status_api, data=json.dumps(data), timeout=5)
 		except:
 			print("Please check your connection!")
 			sys.exit()
 		else:
-			if (r.status)
-		return
+			if (r.status_code==200):
+				response = json.loads(r.text)
+				print("Smoking stats for " + str(settings_data["name"]) + ":\n")
+				self.print_dict(response)
+				return
+			else:
+				print("Error in fetching status!")
+				sys.exit()
 
+	# prints a dict object
+	def print_dict(self, d):
+		for key, value in d.iteritems():
+			print(str(key) + ":\t" + str(value))
+		print ""
 	# cleans ~/.smokeager-cli/
 	def clean(self):
 		print("Cleaning smokeager counts")	
