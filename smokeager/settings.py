@@ -12,6 +12,14 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import djcelery
+
+djcelery.setup_loader()
+
+CELERY_TIMEZONE = 'Asia/Kolkata'
+CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
+CELERY_ACCEPT_CONTENT = ['pickle', 'json', 'msgpack', 'yaml']
+CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -43,7 +51,8 @@ INSTALLED_APPS = (
 
     'smoker',
     'rest_framework',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    'djcelery',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -123,9 +132,6 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-#STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-
-CELERY_TIMEZONE = 'Asia/Kolkata'
 
 # rest framework permission classes
 REST_FRAMEWORK = {
