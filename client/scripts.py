@@ -10,23 +10,46 @@ import ast
 class SmokeagerCLI:
 
 	def __init__(self):
-		# server domain
-		self.SERVER = {
-			"s2": "http://localhost:8000/api", # for testing
-			"s1": "http://autobot/api",
-		}
+
+		self.DEBUG = False
+
+		# testing
+		if self.DEBUG:
+			self.SERVER = {
+				"s1": "http://localhost:8000/api", # for testing
+				"s2": "http://autobot/api",
+			}
+
+			self.SETTINGS = {
+				"sections": [{
+					"account": ["name", "email", "token"],
+				}],
+				"file_name": "settings_testing.ini",
+			}
+		
+		# production
+		else:
+		
+			self.SERVER = {
+				"s2": "http://localhost:8000/api", # for testing
+				"s1": "http://autobot/api",
+			}
+
+			self.SETTINGS = {
+				"sections": [{
+					"account": ["name", "email", "token"],
+				}],
+				"file_name": "settings.ini",
+			}
+
 		# all api urls
 		self.APIS = {
 			"increment": "/increment_smoke",
 			"status": "/get_stats",
 			"signup": "/signup",
 		}
-		self.SETTINGS = {
-			"sections": [{
-				"account": ["name", "email", "token"],
-			}],
-			"file_name": "settings.ini",
-		}		
+
+				
 
 	# sets up smokeager cli for user
 	# stores account information in ~/.smkoeager-cli/account.txt
@@ -197,6 +220,7 @@ class SmokeagerCLI:
 			print("Token missing in settings file!")
 			sys.exit()		
 		status_api = self.SERVER["s1"] + self.APIS["status"]
+
 		data = {
 			"token": token,
 		}
@@ -271,7 +295,6 @@ def main(args):
 		scli.display_manual()
 
 
-if __name__ == "__main__":
-	print("__main__ in scripts")
+if __name__ == "__main__":	
 	main(sys.argv)
 

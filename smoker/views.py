@@ -18,7 +18,7 @@ from rest_framework import status
 from smoker.models import Smoker, SmokeGroup, SmokeAnalytic, Smoke
 from smoker.parser_utils import get_request_content
 from smoker.utils import last_smoke, get_user_smoker_from_token, fetch_smoker_analytics, longest_break, \
-                            create_smoke_group
+                            create_smoke_group, last_3_smokes
 from smoker import serializers as smoker_serializers
 
 import logging, json, ast
@@ -106,23 +106,31 @@ def increment_smoke(request):
                 logger.exception("Smoker not found for token: %s" %token)
 
             else:
-                # create smoke object
-                smoke_obj = Smoke.objects.create()
-                smoke_obj.smokers.add(smoker)                
-                logger.debug("smoke obj created: %s" %smoke_obj)
-                
-                # update analytics obj
                 try:
-                    analytics_obj = smoker.smoke_analytic_individual
+                    count = int(data["count"])
                 except:
-                    logger.exception("Smoker analytic object not found for smoker: %s" %smoker)
-                else:
-                    logger.debug("Smoke analytic: %s" %analytics_obj)
-                    analytics_obj.smoke_count += 1
-                    analytics_obj.daily_count += 1
-                    analytics_obj.weekly_count += 1
-                    analytics_obj.monthly_count += 1
-                    analytics_obj.save()
+                    count = 1
+
+                while count:
+                    # create smoke object
+                    smoke_obj = Smoke.objects.create()
+                    smoke_obj.smokers.add(smoker)                
+                    logger.debug("smoke obj created: %s" %smoke_obj)
+                    
+                    # update analytics obj
+                    try:
+                        analytics_obj = smoker.smoke_analytic_individual
+                    except:
+                        logger.exception("Smoker analytic object not found for smoker: %s" %smoker)
+                    else:
+                        logger.debug("Smoke analytic: %s" %analytics_obj)
+                        analytics_obj.smoke_count += 1
+                        analytics_obj.daily_count += 1
+                        analytics_obj.weekly_count += 1
+                        analytics_obj.monthly_count += 1
+                        analytics_obj.save()
+
+                    count = count - 1
         
         return Response(status=status.HTTP_200_OK)
     

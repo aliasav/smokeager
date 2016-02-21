@@ -73,6 +73,7 @@ def fetch_smoker_analytics(user=None, smoker=None):
             "weekly count": analytics_obj.weekly_count,
             "monthly count": analytics_obj.monthly_count,
             "time since last smoke": last_smoke(analytics_obj, s),
+            "last 3 smokes": last_3_smokes(analytics_obj, s),
             "longest break": longest_break(s),
         }
 
@@ -95,10 +96,32 @@ def convert_time_diff_to_string(time_diff):
 # calculates time since last smoke
 def last_smoke(analytics_obj, smoker):
     current_time = datetime.datetime.now(pytz.utc)
-    latest_time = Smoke.objects.filter(smokers=smoker).latest("created_at").created_at
+    try:
+        latest_time = Smoke.objects.filter(smokers=smoker).latest("created_at").created_at
+    except:
+        logger.error("Smoke object not found!")
+        return None        
+
     latest_time = latest_time.replace(tzinfo=pytz.utc)
     time_diff_string = convert_time_diff_to_string(current_time-latest_time)
     return time_diff_string
+
+# calculates time since last 3 smokes
+def last_3_smokes(analytics_obj, smoker):
+    current_time = datetime.datetime.now(pytz.utc)
+    try:
+        latest_times = Smoke.objects.filter(smokers=smoker).order_by('-created_at')[:3]
+    except:
+        logger.error("Smoke object not found!")
+        return None        
+
+    latest_times = map(lambda x: (x.created_at).replace(tzinfo=pytz.utc), latest_times)
+    time_string = ""
+    for t in latest_times:
+        x = convert_time_diff_to_string(current_time-t)
+        #time_string = str(x) + "\t" + time_string
+        time_string = time_string + str(x) + "\t"
+    return time_string
 
 
 # calculates longest break
