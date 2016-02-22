@@ -7,6 +7,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework.authtoken.models import Token
 from django.utils.timezone import utc
 from smoker.models import Smoke, SmokeGroup
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
@@ -75,6 +76,7 @@ def fetch_smoker_analytics(user=None, smoker=None):
             "time since last smoke": last_smoke(analytics_obj, s),
             "last 3 smokes": last_3_smokes(analytics_obj, s),
             "longest break": longest_break(s),
+            "amount spent": "Rs." + str(amount_spent(analytics_obj, s)),
         }
 
     else:
@@ -122,6 +124,16 @@ def last_3_smokes(analytics_obj, smoker):
         #time_string = str(x) + "\t" + time_string
         time_string = time_string + str(x) + "\t"
     return time_string
+
+# calculates total amount spent
+def amount_spent(analytics_obj, smoker):
+    try:
+        smoke_count = Smoke.objects.filter(smokers=smoker).count()
+    except: 
+        logger.error("Smoke objects not found")
+        return None
+    else:
+        return (smoke_count*settings.SMOKES_COST["cigarette"])
 
 
 # calculates longest break

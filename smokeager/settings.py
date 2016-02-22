@@ -145,6 +145,11 @@ REST_FRAMEWORK = {
     ),
 }
 
+# smoke costs
+SMOKES_COST = {
+    "cigarette": 12,
+}
+
 
 LOGGING = {
     'version': 1,
