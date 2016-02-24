@@ -77,6 +77,7 @@ def fetch_smoker_analytics(user=None, smoker=None):
             "last 3 smokes": last_3_smokes(analytics_obj, s),
             "longest break": longest_break(s),
             "amount spent": "Rs." + str(amount_spent(analytics_obj, s)),
+            "past days records": past_days_smokes(analytics_obj, s),
         }
 
     else:
@@ -124,6 +125,25 @@ def last_3_smokes(analytics_obj, smoker):
         #time_string = str(x) + "\t" + time_string
         time_string = time_string + str(x) + "\t"
     return time_string
+
+# calculates past 7 days smokes
+def past_days_smokes(analytics_obj, smoker):
+    current_time = datetime.datetime.now(pytz.utc)
+    try:
+        smoke_objects = Smoke.objects.filter(smokers=smoker).order_by('-created_at')
+    except:
+        logger.error("Smoke object not found!")
+        return None
+
+    smoke_times = map(lambda x: (x.created_at).replace(tzinfo=pytz.utc).date(), smoke_objects)
+    d = dict()
+    for s in smoke_times:
+        date_string=s.strftime('%m/%d/%Y')
+        if date_string in d:
+            d[date_string] += 1
+        else:
+            d[date_string] = 1
+    return d
 
 # calculates total amount spent
 def amount_spent(analytics_obj, smoker):
