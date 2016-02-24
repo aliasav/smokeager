@@ -52,3 +52,7 @@
   shell: bash "{{ orchestration_dir }}/restart_smokeager_server.sh"
   tags: deploy
 
+- name : Take a dump of current db
+  shell: mysqldump -u'{{ db_user }}' -p'{{ db_password }}' '{{ db_name }}' >'{{ DBdump_dir }}'/'{{ ansible_date_time.date }}'_'{{ ansible_date_time.time }}'.sql
+  tags: deploy
+

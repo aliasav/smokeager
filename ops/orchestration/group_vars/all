@@ -7,3 +7,7 @@ smokeager_main_dir: /home/aliasav/workspace/smokeager/smokeager
 virtualenv_dir: /home/aliasav/virtualenvs/smokeager
 orchestration_dir: /home/aliasav/workspace/smokeager/ops/orchestration
 static_root: staticfiles
+DBdump_dir: /home/aliasav/workspace/db_dumps
+db_user: root
+db_password: autobottransform
+db_name: smokeager

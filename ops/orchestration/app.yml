@@ -5,6 +5,6 @@
   user: aliasav
   become: aliasav
   become_user: aliasav
-  gather_facts: false
+  gather_facts: true
   roles:
     - smokeager_deploy
