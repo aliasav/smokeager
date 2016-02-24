@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
-import datetime, uuid, logging
+import uuid, logging
 from rest_framework.authtoken.models import Token
 
 logger = logging.getLogger(__name__)

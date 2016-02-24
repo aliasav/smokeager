@@ -2,10 +2,8 @@
 generic utilties to be used
 """
 
-import json, string, logging, datetime, pytz
-from rest_framework.parsers import JSONParser
+import string, logging, datetime, pytz
 from rest_framework.authtoken.models import Token
-from django.utils.timezone import utc
 from smoker.models import Smoke, SmokeGroup
 from django.conf import settings
 
@@ -138,7 +136,7 @@ def past_days_smokes(analytics_obj, smoker):
     smoke_times = map(lambda x: (x.created_at).replace(tzinfo=pytz.utc).date(), smoke_objects)
     d = dict()
     for s in smoke_times:
-        date_string=s.strftime('%m/%d/%Y')
+        date_string=s.strftime('%m/%d')
         if date_string in d:
             d[date_string] += 1
         else:

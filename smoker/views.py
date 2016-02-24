@@ -1,27 +1,19 @@
 #### This module contains of all mvp APIs ####
 
 from django.contrib.auth.models import User
-from django.contrib.sites.models import RequestSite, Site
-from django.core.exceptions import ObjectDoesNotExist
-from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render, render_to_response
-from django.template import RequestContext
-from django.conf import settings
 
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
-from rest_framework.parsers import JSONParser
 from rest_framework import status
 
 from smoker.models import Smoker, SmokeGroup, SmokeAnalytic, Smoke
 from smoker.parser_utils import get_request_content
-from smoker.utils import last_smoke, get_user_smoker_from_token, fetch_smoker_analytics, longest_break, \
+from smoker.utils import get_user_smoker_from_token, fetch_smoker_analytics, longest_break, \
                             create_smoke_group, last_3_smokes
 from smoker import serializers as smoker_serializers
 
-import logging, json, ast
+import logging, ast
 
 logger = logging.getLogger(__name__)
 

@@ -1,7 +1,7 @@
 from celery.task.schedules import crontab  
 from celery.decorators import periodic_task, task
 from smoker.models import Smoker, SmokeAnalytic
-import datetime, logging
+import logging
 
 logger = logging.getLogger(__name__)
 

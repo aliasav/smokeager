@@ -1,5 +1,5 @@
 from __future__ import absolute_import
-from kombu import Exchange, Queue
+from kombu import Exchange
 from celery import Celery
 from django.conf import settings
 import os

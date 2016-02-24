@@ -13,5 +13,5 @@ class SignUpSerializer(serializers.Serializer):
 
 class CreateSmokeSerializer(serializers.Serializer):
 
-	token_list = serializers.ListField()
-	count = serializers.IntegerField(min_value=0)
+    token_list = serializers.ListField()
+    count = serializers.IntegerField(min_value=0)

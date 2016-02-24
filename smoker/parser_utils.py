@@ -2,9 +2,8 @@
 generic utilties to be used
 """
 
-import json, string, logging, datetime, pytz
+import json, string, logging, datetime
 from rest_framework.parsers import JSONParser
-from rest_framework.authtoken.models import Token
 
 logger = logging.getLogger(__name__)
 

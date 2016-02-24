@@ -35,7 +35,7 @@ admin.site.register(Smoke, SmokeAdmin)
 class SmokeAnalyticAdmin(admin.ModelAdmin):
 
     list_display = ('guid', 'smoker', 'smoke_group', 'daily_count', 'weekly_count', 'monthly_count', \
-    				'smoke_count', 'daily_target', 'created_at', 'updated_at')
+                    'smoke_count', 'daily_target', 'created_at', 'updated_at')
 
     search_fields = ['guid']
 
