@@ -70,9 +70,9 @@ def fetch_smoker_analytics(user=None, smoker=None):
         analytics_obj = s.smoke_analytic_individual
         resp_data = {
             "total count": analytics_obj.smoke_count,
-            "daily count": analytics_obj.daily_count,
-            "weekly count": analytics_obj.weekly_count,
-            "monthly count": analytics_obj.monthly_count,
+            #"daily count": analytics_obj.daily_count,
+            #"weekly count": analytics_obj.weekly_count,
+            #"monthly count": analytics_obj.monthly_count,
             "time since last smoke": last_smoke(analytics_obj, s),
             "last 3 smokes": last_3_smokes(analytics_obj, s),
             "longest break": longest_break(s),
